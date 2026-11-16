@@ -1,0 +1,402 @@
+detconc: 200 inputs and outputs, from real runs (io/ios.pl has the same as Prolog facts).
+
+1. waves([task(t1,[],const(0)),task(t2,[],const(3)),task(t3,[t2],max),task(t4,[t1,t3],max),task(t5,[t2,t3],inc),task(t6,[t1,t2,t3,t4,t5],sum)])
+   => [[t1,t2],[t3],[t4,t5],[t6]]
+2. run_waves([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[t2],max),task(t4,[t1,t3],sum),task(t5,[t2,t4],sum),task(t6,[t3,t4,t5],product)])
+   => [t1-1,t2-1,t3-1,t4-2,t5-3,t6-6]
+3. critical_path([task(t1,[],const(0)),task(t2,[],const(2))])
+   => 1
+4. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(0)),task(t3,[t2],product),task(t4,[t1,t3],max)])
+   => same_as_waves(true)
+5. waves([task(t1,[],const(3)),task(t2,[t1],max),task(t3,[],const(4))])
+   => [[t1,t3],[t2]]
+6. run_waves([task(t1,[],const(0)),task(t2,[t1],sum),task(t3,[t1,t2],inc),task(t4,[t1,t2,t3],product)])
+   => [t1-0,t2-0,t3-1,t4-0]
+7. critical_path([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[t2],inc),task(t4,[t2,t3],product),task(t5,[t1,t4],sum),task(t6,[t3,t5],product)])
+   => 6
+8. run_reversed_valid([task(t1,[],const(1)),task(t2,[],const(5)),task(t3,[t1,t2],inc),task(t4,[t3],sum),task(t5,[t2,t3],inc),task(t6,[t1,t3],product)])
+   => same_as_waves(true)
+9. waves([task(t1,[],const(1)),task(t2,[],const(2)),task(t3,[t1,t2],inc),task(t4,[],const(0)),task(t5,[t1,t2,t3],product),task(t6,[t1,t3,t5],max)])
+   => [[t1,t2,t4],[t3],[t5],[t6]]
+10. run_waves([task(t1,[],const(2)),task(t2,[t1],sum),task(t3,[t1],inc),task(t4,[t3],sum)])
+   => [t1-2,t2-2,t3-3,t4-3]
+11. critical_path([task(t1,[],const(0)),task(t2,[t1],max)])
+   => 2
+12. run_reversed_valid([task(t1,[],const(0)),task(t2,[t1],max)])
+   => same_as_waves(true)
+13. waves([task(t1,[],const(3)),task(t2,[t1],inc),task(t3,[],const(5)),task(t4,[t1,t2],inc),task(t5,[t1,t4],inc),task(t6,[t1,t3,t5],max)])
+   => [[t1,t3],[t2],[t4],[t5],[t6]]
+14. run_waves([task(t1,[],const(2)),task(t2,[],const(3))])
+   => [t1-2,t2-3]
+15. critical_path([task(t1,[],const(2)),task(t2,[t1],product),task(t3,[t2],max)])
+   => 3
+16. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(2)),task(t3,[],const(3))])
+   => same_as_waves(true)
+17. waves([task(t1,[],const(4)),task(t2,[],const(4)),task(t3,[t1,t2],product)])
+   => [[t1,t2],[t3]]
+18. run_waves([task(t1,[],const(1)),task(t2,[],const(5)),task(t3,[t1],sum),task(t4,[],const(4)),task(t5,[t4],sum),task(t6,[t2,t3,t4],max)])
+   => [t1-1,t2-5,t3-1,t4-4,t5-4,t6-5]
+19. critical_path([task(t1,[],const(4)),task(t2,[],const(0)),task(t3,[t2],sum),task(t4,[t1,t2],max),task(t5,[t2,t4],inc),task(t6,[t2,t3],product)])
+   => 3
+20. run_reversed_valid([task(t1,[],const(0)),task(t2,[t1],product),task(t3,[t1,t2],max),task(t4,[t1,t2],product),task(t5,[t1],product),task(t6,[t3,t4],product)])
+   => same_as_waves(true)
+21. waves([task(t1,[],const(3)),task(t2,[],const(4)),task(t3,[],const(3)),task(t4,[t2],product),task(t5,[t2,t3,t4],inc),task(t6,[t1,t3,t4,t5],sum)])
+   => [[t1,t2,t3],[t4],[t5],[t6]]
+22. run_waves([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[t1],product),task(t4,[t1],product)])
+   => [t1-1,t2-1,t3-1,t4-1]
+23. critical_path([task(t1,[],const(3)),task(t2,[],const(5)),task(t3,[t1,t2],product),task(t4,[t1,t3],product),task(t5,[t1,t2,t3,t4],inc),task(t6,[t3,t4,t5],sum)])
+   => 5
+24. run_reversed_valid([task(t1,[],const(5)),task(t2,[t1],inc),task(t3,[],const(5))])
+   => same_as_waves(true)
+25. waves([task(t1,[],const(4)),task(t2,[t1],max),task(t3,[t1],sum),task(t4,[t2],max),task(t5,[t2,t3,t4],product)])
+   => [[t1],[t2,t3],[t4],[t5]]
+26. run_waves([task(t1,[],const(2)),task(t2,[],const(2)),task(t3,[t1,t2],product)])
+   => [t1-2,t2-2,t3-4]
+27. critical_path([task(t1,[],const(4)),task(t2,[t1],max),task(t3,[],const(3)),task(t4,[t3],max)])
+   => 2
+28. run_reversed_valid([task(t1,[],const(4)),task(t2,[t1],product),task(t3,[],const(1)),task(t4,[t1],product),task(t5,[t1,t2,t3,t4],product),task(t6,[t1,t3,t5],sum)])
+   => same_as_waves(true)
+29. waves([task(t1,[],const(0)),task(t2,[t1],inc),task(t3,[t2],product),task(t4,[t2,t3],sum)])
+   => [[t1],[t2],[t3],[t4]]
+30. run_waves([task(t1,[],const(4)),task(t2,[t1],max),task(t3,[],const(0))])
+   => [t1-4,t2-4,t3-0]
+31. critical_path([task(t1,[],const(0)),task(t2,[t1],sum)])
+   => 2
+32. run_reversed_valid([task(t1,[],const(2)),task(t2,[],const(3)),task(t3,[t1],max),task(t4,[t1,t2],max),task(t5,[t4],inc),task(t6,[t1,t4],sum)])
+   => same_as_waves(true)
+33. waves([task(t1,[],const(4)),task(t2,[],const(3)),task(t3,[t1],sum),task(t4,[t1,t2],sum)])
+   => [[t1,t2],[t3,t4]]
+34. run_waves([task(t1,[],const(5)),task(t2,[],const(1)),task(t3,[],const(5))])
+   => [t1-5,t2-1,t3-5]
+35. critical_path([task(t1,[],const(5)),task(t2,[t1],inc)])
+   => 2
+36. run_reversed_valid([task(t1,[],const(3)),task(t2,[],const(2)),task(t3,[t1],sum),task(t4,[t2,t3],max),task(t5,[t1,t2],inc)])
+   => same_as_waves(true)
+37. waves([task(t1,[],const(1)),task(t2,[],const(5)),task(t3,[t1,t2],product),task(t4,[t1],max),task(t5,[t4],inc)])
+   => [[t1,t2],[t3,t4],[t5]]
+38. run_waves([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[t1,t2],product),task(t4,[t1,t3],max),task(t5,[t2,t3],inc),task(t6,[t1,t2,t4],sum)])
+   => [t1-1,t2-1,t3-1,t4-1,t5-3,t6-3]
+39. critical_path([task(t1,[],const(0)),task(t2,[],const(5))])
+   => 1
+40. run_reversed_valid([task(t1,[],const(4)),task(t2,[],const(0))])
+   => same_as_waves(true)
+41. waves([task(t1,[],const(4)),task(t2,[t1],sum),task(t3,[t2],product),task(t4,[t2],inc),task(t5,[t2,t4],inc)])
+   => [[t1],[t2],[t3,t4],[t5]]
+42. run_waves([task(t1,[],const(4)),task(t2,[],const(0))])
+   => [t1-4,t2-0]
+43. critical_path([task(t1,[],const(4)),task(t2,[],const(2)),task(t3,[],const(0)),task(t4,[t2],inc)])
+   => 2
+44. run_reversed_valid([task(t1,[],const(3)),task(t2,[],const(5)),task(t3,[t1],product),task(t4,[t1,t2,t3],product),task(t5,[t4],sum)])
+   => same_as_waves(true)
+45. waves([task(t1,[],const(2)),task(t2,[],const(0))])
+   => [[t1,t2]]
+46. run_waves([task(t1,[],const(2)),task(t2,[],const(1))])
+   => [t1-2,t2-1]
+47. critical_path([task(t1,[],const(2)),task(t2,[],const(2)),task(t3,[t1,t2],sum),task(t4,[t1,t3],sum),task(t5,[t1,t4],inc)])
+   => 4
+48. run_reversed_valid([task(t1,[],const(3)),task(t2,[t1],product)])
+   => same_as_waves(true)
+49. waves([task(t1,[],const(4)),task(t2,[t1],inc),task(t3,[t1],product)])
+   => [[t1],[t2,t3]]
+50. run_waves([task(t1,[],const(2)),task(t2,[t1],inc),task(t3,[t1,t2],sum),task(t4,[t3],max),task(t5,[t1],product),task(t6,[t1,t3,t4,t5],inc)])
+   => [t1-2,t2-3,t3-5,t4-5,t5-2,t6-15]
+51. critical_path([task(t1,[],const(1)),task(t2,[],const(3)),task(t3,[t1],max)])
+   => 2
+52. run_reversed_valid([task(t1,[],const(4)),task(t2,[],const(2)),task(t3,[],const(1)),task(t4,[t1,t2,t3],sum),task(t5,[t1,t2,t3,t4],inc),task(t6,[t1,t4],max)])
+   => same_as_waves(true)
+53. waves([task(t1,[],const(4)),task(t2,[t1],inc),task(t3,[],const(0)),task(t4,[t1,t3],sum),task(t5,[t1,t2,t3,t4],sum),task(t6,[],const(3))])
+   => [[t1,t3,t6],[t2,t4],[t5]]
+54. run_waves([task(t1,[],const(1)),task(t2,[t1],max),task(t3,[t1],max)])
+   => [t1-1,t2-1,t3-1]
+55. critical_path([task(t1,[],const(5)),task(t2,[],const(4)),task(t3,[],const(1)),task(t4,[],const(3)),task(t5,[t4],max)])
+   => 2
+56. run_reversed_valid([task(t1,[],const(3)),task(t2,[],const(4)),task(t3,[t1],max),task(t4,[t1,t2],product),task(t5,[t4],max)])
+   => same_as_waves(true)
+57. waves([task(t1,[],const(4)),task(t2,[],const(3)),task(t3,[t2],inc)])
+   => [[t1,t2],[t3]]
+58. run_waves([task(t1,[],const(0)),task(t2,[t1],product)])
+   => [t1-0,t2-0]
+59. critical_path([task(t1,[],const(2)),task(t2,[t1],max),task(t3,[],const(0)),task(t4,[t1,t3],max),task(t5,[t3,t4],product)])
+   => 3
+60. run_reversed_valid([task(t1,[],const(0)),task(t2,[t1],sum),task(t3,[],const(4)),task(t4,[t2,t3],sum),task(t5,[t1,t4],product),task(t6,[t1,t5],product)])
+   => same_as_waves(true)
+61. waves([task(t1,[],const(2)),task(t2,[],const(5))])
+   => [[t1,t2]]
+62. run_waves([task(t1,[],const(1)),task(t2,[],const(2))])
+   => [t1-1,t2-2]
+63. critical_path([task(t1,[],const(3)),task(t2,[t1],inc),task(t3,[],const(5)),task(t4,[],const(2)),task(t5,[t2,t3,t4],max)])
+   => 3
+64. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(2)),task(t3,[t2],inc),task(t4,[t2,t3],product),task(t5,[t2,t3],product)])
+   => same_as_waves(true)
+65. waves([task(t1,[],const(5)),task(t2,[],const(4)),task(t3,[],const(3)),task(t4,[],const(2))])
+   => [[t1,t2,t3,t4]]
+66. run_waves([task(t1,[],const(3)),task(t2,[],const(2)),task(t3,[t1,t2],product)])
+   => [t1-3,t2-2,t3-6]
+67. critical_path([task(t1,[],const(3)),task(t2,[],const(1))])
+   => 1
+68. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(3)),task(t3,[t1],max),task(t4,[],const(4))])
+   => same_as_waves(true)
+69. waves([task(t1,[],const(1)),task(t2,[t1],sum)])
+   => [[t1],[t2]]
+70. run_waves([task(t1,[],const(5)),task(t2,[],const(2))])
+   => [t1-5,t2-2]
+71. critical_path([task(t1,[],const(0)),task(t2,[],const(5))])
+   => 1
+72. run_reversed_valid([task(t1,[],const(0)),task(t2,[],const(0)),task(t3,[t1,t2],max)])
+   => same_as_waves(true)
+73. waves([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[t1,t2],max)])
+   => [[t1],[t2],[t3]]
+74. run_waves([task(t1,[],const(5)),task(t2,[t1],max),task(t3,[t1],product),task(t4,[t1],sum)])
+   => [t1-5,t2-5,t3-5,t4-5]
+75. critical_path([task(t1,[],const(0)),task(t2,[t1],product)])
+   => 2
+76. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(0)),task(t3,[],const(0)),task(t4,[t2],max),task(t5,[],const(3))])
+   => same_as_waves(true)
+77. waves([task(t1,[],const(4)),task(t2,[],const(5)),task(t3,[t1],product),task(t4,[t1,t2,t3],max)])
+   => [[t1,t2],[t3],[t4]]
+78. run_waves([task(t1,[],const(4)),task(t2,[],const(1)),task(t3,[t2],inc),task(t4,[t1,t3],max),task(t5,[t1],inc)])
+   => [t1-4,t2-1,t3-2,t4-4,t5-5]
+79. critical_path([task(t1,[],const(2)),task(t2,[],const(4))])
+   => 1
+80. run_reversed_valid([task(t1,[],const(4)),task(t2,[],const(4)),task(t3,[t1],sum),task(t4,[t1],product),task(t5,[t1,t3],sum)])
+   => same_as_waves(true)
+81. waves([task(t1,[],const(3)),task(t2,[],const(3)),task(t3,[t2],inc)])
+   => [[t1,t2],[t3]]
+82. run_waves([task(t1,[],const(2)),task(t2,[],const(1)),task(t3,[],const(5))])
+   => [t1-2,t2-1,t3-5]
+83. critical_path([task(t1,[],const(2)),task(t2,[t1],product),task(t3,[t2],product)])
+   => 3
+84. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(4)),task(t3,[t2],product),task(t4,[t2],inc)])
+   => same_as_waves(true)
+85. waves([task(t1,[],const(4)),task(t2,[],const(0)),task(t3,[t2],inc),task(t4,[t2,t3],product),task(t5,[t1,t2,t3],inc),task(t6,[t1,t4,t5],sum)])
+   => [[t1,t2],[t3],[t4,t5],[t6]]
+86. run_waves([task(t1,[],const(3)),task(t2,[t1],inc),task(t3,[t1,t2],inc),task(t4,[t2,t3],product),task(t5,[t1,t2,t4],max)])
+   => [t1-3,t2-4,t3-8,t4-32,t5-32]
+87. critical_path([task(t1,[],const(5)),task(t2,[],const(4)),task(t3,[],const(4)),task(t4,[t1,t3],inc),task(t5,[t1,t4],sum),task(t6,[t4],sum)])
+   => 3
+88. run_reversed_valid([task(t1,[],const(2)),task(t2,[],const(2)),task(t3,[t2],inc)])
+   => same_as_waves(true)
+89. waves([task(t1,[],const(1)),task(t2,[t1],product),task(t3,[t2],inc),task(t4,[],const(2)),task(t5,[t1,t4],max)])
+   => [[t1,t4],[t2,t5],[t3]]
+90. run_waves([task(t1,[],const(2)),task(t2,[t1],sum),task(t3,[],const(4))])
+   => [t1-2,t2-2,t3-4]
+91. critical_path([task(t1,[],const(5)),task(t2,[],const(4)),task(t3,[t2],sum),task(t4,[t2],inc)])
+   => 2
+92. run_reversed_valid([task(t1,[],const(2)),task(t2,[t1],sum),task(t3,[],const(0)),task(t4,[t1,t2],product),task(t5,[t2,t4],sum)])
+   => same_as_waves(true)
+93. waves([task(t1,[],const(4)),task(t2,[t1],sum),task(t3,[t1,t2],inc),task(t4,[t1,t2],product),task(t5,[t1,t3,t4],product)])
+   => [[t1],[t2],[t3,t4],[t5]]
+94. run_waves([task(t1,[],const(3)),task(t2,[t1],sum),task(t3,[t2],inc),task(t4,[t2],sum),task(t5,[t2,t3],max),task(t6,[t4],max)])
+   => [t1-3,t2-3,t3-4,t4-3,t5-4,t6-3]
+95. critical_path([task(t1,[],const(1)),task(t2,[t1],inc),task(t3,[],const(0)),task(t4,[],const(3)),task(t5,[t1,t3],sum),task(t6,[t3,t5],max)])
+   => 3
+96. run_reversed_valid([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[t1,t2],sum),task(t4,[t1,t2,t3],product)])
+   => same_as_waves(true)
+97. waves([task(t1,[],const(1)),task(t2,[],const(0)),task(t3,[],const(2))])
+   => [[t1,t2,t3]]
+98. run_waves([task(t1,[],const(5)),task(t2,[t1],product),task(t3,[t1],sum),task(t4,[],const(3)),task(t5,[t1,t2,t4],max)])
+   => [t1-5,t2-5,t3-5,t4-3,t5-5]
+99. critical_path([task(t1,[],const(0)),task(t2,[],const(3)),task(t3,[t1,t2],product)])
+   => 2
+100. run_reversed_valid([task(t1,[],const(1)),task(t2,[],const(4)),task(t3,[t2],sum),task(t4,[t1,t3],inc),task(t5,[t2,t3],inc)])
+   => same_as_waves(true)
+101. waves([task(t1,[],const(2)),task(t2,[],const(4))])
+   => [[t1,t2]]
+102. run_waves([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[t2],sum),task(t4,[t2,t3],inc)])
+   => [t1-1,t2-1,t3-1,t4-3]
+103. critical_path([task(t1,[],const(3)),task(t2,[t1],product),task(t3,[t1,t2],max),task(t4,[t1,t3],product)])
+   => 4
+104. run_reversed_valid([task(t1,[],const(3)),task(t2,[],const(3)),task(t3,[t1],sum),task(t4,[t2],max),task(t5,[t3,t4],sum),task(t6,[t1,t2,t4],max)])
+   => same_as_waves(true)
+105. waves([task(t1,[],const(0)),task(t2,[],const(0)),task(t3,[t1],sum),task(t4,[],const(2)),task(t5,[t2,t4],inc),task(t6,[t1,t5],product)])
+   => [[t1,t2,t4],[t3,t5],[t6]]
+106. run_waves([task(t1,[],const(4)),task(t2,[],const(3)),task(t3,[],const(0)),task(t4,[t2,t3],product)])
+   => [t1-4,t2-3,t3-0,t4-0]
+107. critical_path([task(t1,[],const(2)),task(t2,[],const(5)),task(t3,[],const(0)),task(t4,[t1,t3],product),task(t5,[t1,t3,t4],max)])
+   => 3
+108. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(4)),task(t3,[t1],inc),task(t4,[],const(1)),task(t5,[t2,t3,t4],sum)])
+   => same_as_waves(true)
+109. waves([task(t1,[],const(4)),task(t2,[],const(4)),task(t3,[t1],max)])
+   => [[t1,t2],[t3]]
+110. run_waves([task(t1,[],const(5)),task(t2,[t1],max),task(t3,[],const(3))])
+   => [t1-5,t2-5,t3-3]
+111. critical_path([task(t1,[],const(5)),task(t2,[],const(5)),task(t3,[],const(0)),task(t4,[t1],sum),task(t5,[t3],inc)])
+   => 2
+112. run_reversed_valid([task(t1,[],const(4)),task(t2,[],const(4))])
+   => same_as_waves(true)
+113. waves([task(t1,[],const(5)),task(t2,[],const(3)),task(t3,[t2],inc),task(t4,[t1,t2,t3],max),task(t5,[t2],inc)])
+   => [[t1,t2],[t3,t5],[t4]]
+114. run_waves([task(t1,[],const(2)),task(t2,[],const(5)),task(t3,[t2],product)])
+   => [t1-2,t2-5,t3-5]
+115. critical_path([task(t1,[],const(2)),task(t2,[t1],sum)])
+   => 2
+116. run_reversed_valid([task(t1,[],const(0)),task(t2,[t1],inc)])
+   => same_as_waves(true)
+117. waves([task(t1,[],const(2)),task(t2,[t1],inc),task(t3,[],const(3)),task(t4,[t1],inc),task(t5,[t3],sum)])
+   => [[t1,t3],[t2,t4,t5]]
+118. run_waves([task(t1,[],const(4)),task(t2,[],const(5)),task(t3,[],const(2)),task(t4,[t2],product),task(t5,[t1,t3],sum)])
+   => [t1-4,t2-5,t3-2,t4-5,t5-6]
+119. critical_path([task(t1,[],const(2)),task(t2,[t1],inc),task(t3,[t2],product)])
+   => 3
+120. run_reversed_valid([task(t1,[],const(4)),task(t2,[],const(2)),task(t3,[t1],inc),task(t4,[t2,t3],max),task(t5,[t1],product),task(t6,[t1],max)])
+   => same_as_waves(true)
+121. waves([task(t1,[],const(5)),task(t2,[],const(4))])
+   => [[t1,t2]]
+122. run_waves([task(t1,[],const(2)),task(t2,[],const(5)),task(t3,[t1,t2],inc),task(t4,[t1,t3],sum),task(t5,[t3,t4],product),task(t6,[t2,t3,t5],sum)])
+   => [t1-2,t2-5,t3-8,t4-10,t5-80,t6-93]
+123. critical_path([task(t1,[],const(3)),task(t2,[t1],inc)])
+   => 2
+124. run_reversed_valid([task(t1,[],const(2)),task(t2,[],const(2)),task(t3,[t1],inc),task(t4,[t1,t3],max),task(t5,[t1,t4],product),task(t6,[t1,t2,t3,t4],inc)])
+   => same_as_waves(true)
+125. waves([task(t1,[],const(3)),task(t2,[t1],product)])
+   => [[t1],[t2]]
+126. run_waves([task(t1,[],const(1)),task(t2,[],const(5)),task(t3,[t1,t2],product),task(t4,[t1,t3],product),task(t5,[t1,t2,t3],inc)])
+   => [t1-1,t2-5,t3-5,t4-5,t5-12]
+127. critical_path([task(t1,[],const(0)),task(t2,[],const(3)),task(t3,[t1],inc),task(t4,[],const(1)),task(t5,[t2,t4],product)])
+   => 2
+128. run_reversed_valid([task(t1,[],const(4)),task(t2,[t1],max)])
+   => same_as_waves(true)
+129. waves([task(t1,[],const(5)),task(t2,[],const(0)),task(t3,[t1,t2],max),task(t4,[t1,t3],sum),task(t5,[t1,t2,t3,t4],inc),task(t6,[t2,t3,t5],product)])
+   => [[t1,t2],[t3],[t4],[t5],[t6]]
+130. run_waves([task(t1,[],const(0)),task(t2,[],const(5))])
+   => [t1-0,t2-5]
+131. critical_path([task(t1,[],const(4)),task(t2,[],const(4)),task(t3,[],const(0)),task(t4,[t1],max)])
+   => 2
+132. run_reversed_valid([task(t1,[],const(3)),task(t2,[],const(4)),task(t3,[t1],max),task(t4,[],const(5))])
+   => same_as_waves(true)
+133. waves([task(t1,[],const(2)),task(t2,[],const(4)),task(t3,[t1],sum),task(t4,[t3],inc),task(t5,[t4],max),task(t6,[t1,t4],product)])
+   => [[t1,t2],[t3],[t4],[t5,t6]]
+134. run_waves([task(t1,[],const(5)),task(t2,[t1],sum),task(t3,[t1],inc)])
+   => [t1-5,t2-5,t3-6]
+135. critical_path([task(t1,[],const(0)),task(t2,[],const(5)),task(t3,[t2],max),task(t4,[t3],max),task(t5,[t1,t3,t4],inc),task(t6,[t2],inc)])
+   => 4
+136. run_reversed_valid([task(t1,[],const(3)),task(t2,[],const(4)),task(t3,[],const(3)),task(t4,[t1],max),task(t5,[t1,t3,t4],product),task(t6,[t1,t3,t4],product)])
+   => same_as_waves(true)
+137. waves([task(t1,[],const(2)),task(t2,[],const(1))])
+   => [[t1,t2]]
+138. run_waves([task(t1,[],const(4)),task(t2,[t1],sum),task(t3,[t2],max),task(t4,[t2,t3],inc),task(t5,[t1,t2,t3,t4],sum)])
+   => [t1-4,t2-4,t3-4,t4-9,t5-21]
+139. critical_path([task(t1,[],const(0)),task(t2,[t1],max),task(t3,[t1],product),task(t4,[],const(4))])
+   => 2
+140. run_reversed_valid([task(t1,[],const(0)),task(t2,[],const(4)),task(t3,[t1],inc),task(t4,[],const(4))])
+   => same_as_waves(true)
+141. waves([task(t1,[],const(5)),task(t2,[],const(3)),task(t3,[t1,t2],inc)])
+   => [[t1,t2],[t3]]
+142. run_waves([task(t1,[],const(4)),task(t2,[t1],inc),task(t3,[t2],max)])
+   => [t1-4,t2-5,t3-5]
+143. critical_path([task(t1,[],const(1)),task(t2,[t1],product),task(t3,[],const(4)),task(t4,[t1],sum),task(t5,[t3,t4],sum)])
+   => 3
+144. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(0)),task(t3,[t2],inc)])
+   => same_as_waves(true)
+145. waves([task(t1,[],const(4)),task(t2,[],const(4))])
+   => [[t1,t2]]
+146. run_waves([task(t1,[],const(0)),task(t2,[],const(1)),task(t3,[t1,t2],inc),task(t4,[t1],inc),task(t5,[t3,t4],sum)])
+   => [t1-0,t2-1,t3-2,t4-1,t5-3]
+147. critical_path([task(t1,[],const(0)),task(t2,[],const(2)),task(t3,[t2],sum),task(t4,[t1,t2,t3],sum),task(t5,[t1,t2,t3,t4],max),task(t6,[],const(5))])
+   => 4
+148. run_reversed_valid([task(t1,[],const(5)),task(t2,[],const(5)),task(t3,[t1],max),task(t4,[t3],max)])
+   => same_as_waves(true)
+149. waves([task(t1,[],const(1)),task(t2,[t1],product)])
+   => [[t1],[t2]]
+150. run_waves([task(t1,[],const(2)),task(t2,[],const(5)),task(t3,[t1,t2],max),task(t4,[t1,t2],product),task(t5,[],const(3))])
+   => [t1-2,t2-5,t3-5,t4-10,t5-3]
+151. critical_path([task(t1,[],const(3)),task(t2,[],const(0))])
+   => 1
+152. run_reversed_valid([task(t1,[],const(2)),task(t2,[t1],inc),task(t3,[],const(3)),task(t4,[t3],inc),task(t5,[t2,t3],product),task(t6,[t1,t2,t4,t5],max)])
+   => same_as_waves(true)
+153. waves([task(t1,[],const(0)),task(t2,[],const(1)),task(t3,[t1],inc),task(t4,[t1,t2],inc)])
+   => [[t1,t2],[t3,t4]]
+154. run_waves([task(t1,[],const(1)),task(t2,[],const(3)),task(t3,[t1],inc)])
+   => [t1-1,t2-3,t3-2]
+155. critical_path([task(t1,[],const(0)),task(t2,[t1],max),task(t3,[t1],product)])
+   => 2
+156. run_reversed_valid([task(t1,[],const(2)),task(t2,[t1],max),task(t3,[t1],max),task(t4,[],const(1)),task(t5,[t1,t2],product)])
+   => same_as_waves(true)
+157. waves([task(t1,[],const(2)),task(t2,[t1],product),task(t3,[t1],product),task(t4,[t1,t2,t3],inc),task(t5,[t1,t4],product)])
+   => [[t1],[t2,t3],[t4],[t5]]
+158. run_waves([task(t1,[],const(1)),task(t2,[t1],sum)])
+   => [t1-1,t2-1]
+159. critical_path([task(t1,[],const(0)),task(t2,[t1],product),task(t3,[t1,t2],max)])
+   => 3
+160. run_reversed_valid([task(t1,[],const(2)),task(t2,[],const(4)),task(t3,[t1],product),task(t4,[t1],product),task(t5,[t1,t2],product),task(t6,[t2],sum)])
+   => same_as_waves(true)
+161. waves([task(t1,[],const(4)),task(t2,[],const(2)),task(t3,[t1],product),task(t4,[t1,t2],max)])
+   => [[t1,t2],[t3,t4]]
+162. run_waves([task(t1,[],const(2)),task(t2,[],const(2))])
+   => [t1-2,t2-2]
+163. critical_path([task(t1,[],const(4)),task(t2,[],const(3))])
+   => 1
+164. run_reversed_valid([task(t1,[],const(1)),task(t2,[t1],inc)])
+   => same_as_waves(true)
+165. waves([task(t1,[],const(5)),task(t2,[t1],inc),task(t3,[t1,t2],product),task(t4,[t3],sum)])
+   => [[t1],[t2],[t3],[t4]]
+166. run_waves([task(t1,[],const(3)),task(t2,[t1],sum),task(t3,[t2],max)])
+   => [t1-3,t2-3,t3-3]
+167. critical_path([task(t1,[],const(2)),task(t2,[t1],inc),task(t3,[t1],sum)])
+   => 2
+168. run_reversed_valid([task(t1,[],const(3)),task(t2,[],const(1)),task(t3,[t2],inc),task(t4,[t2],product)])
+   => same_as_waves(true)
+169. waves([task(t1,[],const(3)),task(t2,[t1],sum),task(t3,[t1,t2],product),task(t4,[t1],inc)])
+   => [[t1],[t2,t4],[t3]]
+170. run_waves([task(t1,[],const(2)),task(t2,[t1],max),task(t3,[],const(5)),task(t4,[t1,t2,t3],product)])
+   => [t1-2,t2-2,t3-5,t4-20]
+171. critical_path([task(t1,[],const(3)),task(t2,[],const(1)),task(t3,[],const(3))])
+   => 1
+172. run_reversed_valid([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[],const(4))])
+   => same_as_waves(true)
+173. waves([task(t1,[],const(5)),task(t2,[],const(1)),task(t3,[],const(3)),task(t4,[t2],inc),task(t5,[t2],sum),task(t6,[t1,t2,t4],sum)])
+   => [[t1,t2,t3],[t4,t5],[t6]]
+174. run_waves([task(t1,[],const(3)),task(t2,[],const(4)),task(t3,[t2],sum)])
+   => [t1-3,t2-4,t3-4]
+175. critical_path([task(t1,[],const(3)),task(t2,[t1],max),task(t3,[t1,t2],product)])
+   => 3
+176. run_reversed_valid([task(t1,[],const(2)),task(t2,[t1],sum),task(t3,[t1,t2],product),task(t4,[t1,t2,t3],sum)])
+   => same_as_waves(true)
+177. waves([task(t1,[],const(3)),task(t2,[],const(1))])
+   => [[t1,t2]]
+178. run_waves([task(t1,[],const(0)),task(t2,[],const(4)),task(t3,[t1],max),task(t4,[t1,t2],sum),task(t5,[t4],product)])
+   => [t1-0,t2-4,t3-0,t4-4,t5-4]
+179. critical_path([task(t1,[],const(4)),task(t2,[],const(5))])
+   => 1
+180. run_reversed_valid([task(t1,[],const(3)),task(t2,[t1],max)])
+   => same_as_waves(true)
+181. waves([task(t1,[],const(3)),task(t2,[t1],sum)])
+   => [[t1],[t2]]
+182. run_waves([task(t1,[],const(3)),task(t2,[t1],max),task(t3,[],const(0))])
+   => [t1-3,t2-3,t3-0]
+183. critical_path([task(t1,[],const(2)),task(t2,[],const(1)),task(t3,[t2],product),task(t4,[t2],max),task(t5,[t1,t2,t3],max),task(t6,[t2,t5],product)])
+   => 4
+184. run_reversed_valid([task(t1,[],const(1)),task(t2,[t1],sum),task(t3,[],const(1)),task(t4,[t2,t3],sum)])
+   => same_as_waves(true)
+185. waves([task(t1,[],const(3)),task(t2,[],const(4)),task(t3,[t1],product)])
+   => [[t1,t2],[t3]]
+186. run_waves([task(t1,[],const(0)),task(t2,[t1],max),task(t3,[t1,t2],inc),task(t4,[t2,t3],sum),task(t5,[t2,t3],sum)])
+   => [t1-0,t2-0,t3-1,t4-1,t5-1]
+187. critical_path([task(t1,[],const(4)),task(t2,[],const(2)),task(t3,[],const(5)),task(t4,[t1,t2,t3],inc),task(t5,[],const(0)),task(t6,[t3,t4,t5],product)])
+   => 3
+188. run_reversed_valid([task(t1,[],const(0)),task(t2,[],const(4)),task(t3,[t1,t2],max),task(t4,[t2],max),task(t5,[t2,t4],sum)])
+   => same_as_waves(true)
+189. waves([task(t1,[],const(0)),task(t2,[t1],max),task(t3,[t1],product),task(t4,[t1,t3],sum)])
+   => [[t1],[t2,t3],[t4]]
+190. run_waves([task(t1,[],const(5)),task(t2,[t1],inc)])
+   => [t1-5,t2-6]
+191. critical_path([task(t1,[],const(0)),task(t2,[t1],inc)])
+   => 2
+192. run_reversed_valid([task(t1,[],const(2)),task(t2,[t1],sum),task(t3,[t1,t2],max),task(t4,[t1,t2],max),task(t5,[],const(1))])
+   => same_as_waves(true)
+193. waves([task(t1,[],const(0)),task(t2,[],const(4)),task(t3,[t2],sum),task(t4,[t3],inc),task(t5,[t2,t4],max),task(t6,[t2,t3,t4,t5],product)])
+   => [[t1,t2],[t3],[t4],[t5],[t6]]
+194. run_waves([task(t1,[],const(1)),task(t2,[t1],product),task(t3,[t1,t2],sum)])
+   => [t1-1,t2-1,t3-2]
+195. critical_path([task(t1,[],const(0)),task(t2,[],const(4)),task(t3,[t1,t2],sum),task(t4,[t1],max),task(t5,[t1,t4],max)])
+   => 3
+196. run_reversed_valid([task(t1,[],const(5)),task(t2,[t1],sum)])
+   => same_as_waves(true)
+197. waves([task(t1,[],const(5)),task(t2,[],const(2)),task(t3,[t2],sum)])
+   => [[t1,t2],[t3]]
+198. run_waves([task(t1,[],const(1)),task(t2,[t1],max),task(t3,[t2],inc),task(t4,[t1,t2],inc),task(t5,[t1,t2],max),task(t6,[t2,t3,t4,t5],product)])
+   => [t1-1,t2-1,t3-2,t4-3,t5-1,t6-6]
+199. critical_path([task(t1,[],const(1)),task(t2,[],const(2)),task(t3,[t2],sum),task(t4,[t1,t2],inc)])
+   => 2
+200. run_reversed_valid([task(t1,[],const(0)),task(t2,[t1],inc),task(t3,[t2],product),task(t4,[t1,t2],inc),task(t5,[t2,t3,t4],inc)])
+   => same_as_waves(true)
