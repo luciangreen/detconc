@@ -10,18 +10,18 @@
 :- use_module(library(apply)).
 :- use_module(library(pairs)).
 
-op(const(N), _, N).
-op(sum, Xs, S) :- sum_list(Xs, S).
-op(product, Xs, P) :- foldl([X, A, B]>>(B is A * X), Xs, 1, P).
-op(max, Xs, M) :- ( Xs == [] -> M = 0 ; max_list(Xs, M) ).
-op(inc, Xs, Y) :- sum_list(Xs, S), Y is S + 1.
+apply_op(const(N), _, N).
+apply_op(sum, Xs, S) :- sum_list(Xs, S).
+apply_op(product, Xs, P) :- foldl([X, A, B]>>(B is A * X), Xs, 1, P).
+apply_op(max, Xs, M) :- ( Xs == [] -> M = 0 ; max_list(Xs, M) ).
+apply_op(inc, Xs, Y) :- sum_list(Xs, S), Y is S + 1.
 
 valid_order(Ts, O) :- length(Ts, N), length(O, N), msort(O, S), findall(Id, member(task(Id, _, _), Ts), Ids), msort(Ids, S),
     forall(( nth1(I, O, Id), member(task(Id, Ds, _), Ts), member(D, Ds) ), ( nth1(J, O, D), J < I )).
 orders(Ts, O) :- findall(Id, member(task(Id, _, _), Ts), Ids), permutation(Ids, O), valid_order(Ts, O).
 
 % run_order(+Tasks, +Order, -Results): Id-Value pairs, sorted by Id.
-run_order(Ts, O, R) :- foldl([Id, A0, A]>>( member(task(Id, Ds, Op), Ts), maplist([D, V]>>memberchk(D-V, A0), Ds, Vs), op(Op, Vs, X), A = [Id-X|A0] ), O, [], R0), msort(R0, R).
+run_order(Ts, O, R) :- foldl([Id, A0, A]>>( member(task(Id, Ds, Op), Ts), maplist([D, V]>>memberchk(D-V, A0), Ds, Vs), apply_op(Op, Vs, X), A = [Id-X|A0] ), O, [], R0), msort(R0, R).
 
 % waves(+Tasks, -Waves): wave k holds the tasks whose dependencies are all in earlier waves.
 waves(Ts, Ws) :- waves_(Ts, [], Ws).
