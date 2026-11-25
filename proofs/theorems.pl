@@ -29,3 +29,10 @@ theorem(waves_are_valid) :- forall(dag(Ts), ( waves(Ts, Ws), append(Ws, O), vali
 theorem(waves_are_the_critical_path) :- forall(dag(Ts), ( critical_path(Ts, N), longest_chain(Ts, L), N =:= L )).
 longest_chain(Ts, L) :- aggregate_all(max(D), ( member(task(Id, _, _), Ts), depth(Ts, Id, D) ), L).
 depth(Ts, Id, D) :- member(task(Id, Ds, _), Ts), ( Ds == [] -> D = 1 ; aggregate_all(max(X), ( member(P, Ds), depth(Ts, P, X) ), M), D is M + 1 ).
+
+% 5. A job that is not a DAG is reported, never run with tasks missing: adding a task on a cycle, or one that
+% waits on a task that does not exist, gives an error naming exactly that task (and the missing name), and a DAG
+% never gives an error.
+theorem(bad_jobs_are_reported) :- forall(dag(Ts), ( run_waves(Ts, R0), R0 \= error(_, _),
+    append(Ts, [task(e, [e], sum)], T1), run_waves(T1, error(unscheduled([e]), missing([]))),
+    append(Ts, [task(e, [a, z], max)], T2), run_waves(T2, error(unscheduled([e]), missing([z]))) )).

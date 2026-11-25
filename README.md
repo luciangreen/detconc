@@ -8,16 +8,18 @@ parallel Prolog that always gives the same results however the work is scheduled
 ?- use_module(prolog/detconc).
 ?- waves([task(a, [], const(2)), task(b, [], const(3)), task(c, [a, b], sum)], W).   % W = [[a,b],[c]]
 ?- run_order([task(a, [], const(2)), task(b, [], const(3)), task(c, [a, b], sum)], [b, a, c], R).   % R = [a-2, b-3, c-5]
+?- run_waves([task(a, [b], const(1)), task(b, [a], const(2)), task(c, [z], sum)], R).   % R = error(unscheduled([a,b,c]), missing([z]))
 ```
 
 ## Proofs
 
-`proofs/theorems.pl` proves 4 theorems by exhaustion: each one is checked for every case in a finite domain that covers every branch of the definitions. every DAG on tasks a, b, c, d where each task may depend on any earlier ones, with every op.
+`proofs/theorems.pl` proves 5 theorems by exhaustion: each one is checked for every case in a finite domain that covers every branch of the definitions. every DAG on tasks a, b, c, d where each task may depend on any earlier ones, with every op.
 
 1. Determinism: every order that respects the dependencies gives the same results.
 2. The parallel waves give the same results as any sequential order.
 3. The waves respect the dependencies, and cover every task once.
 4. The number of waves is the longest chain of dependencies (no schedule needs fewer rounds).
+5. A job that is not a DAG is reported, never run with tasks missing: a task on a cycle, or one waiting on a task that does not exist, gives error(unscheduled(Ids), missing(Deps)).
 
 ```sh
 swipl -g main -t halt proofs/theorems.pl
